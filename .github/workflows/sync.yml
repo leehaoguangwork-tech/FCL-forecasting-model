@@ -3,22 +3,26 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 * * * *'
-
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
+ 
 jobs:
   sync:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
+ 
     steps:
-      - name: Sync Fork
-        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
+      - name: Checkout fork
+        uses: actions/checkout@v4
         with:
-          upstream_sync_repo: Alex8338/FCL-forecasting-model
-          upstream_sync_branch: main
-          target_sync_branch: main
-          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
-          test_mode: false
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+ 
+      - name: Add upstream and sync
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/Alex8338/FCL-forecasting-model.git
+          git fetch upstream
+          git merge upstream/main --no-edit --allow-unrelated-histories
+          git push origin main
