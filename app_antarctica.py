@@ -2,7 +2,7 @@
 Antarctica FCL Freight Rate Forecasting Dashboard
 ==================================================
 Standalone Streamlit app for the Antarctica → World lanes model.
-Tabs: Overview | Seasonality | Path 1 Forecast | Path 2 Forecast |
+Tabs: Overview | Seasonality | Model with COVID Forecast | Stable Model Forecast |
       Validation (Jan25–Apr26) | Model Comparison | Data Sources
 """
 
@@ -263,9 +263,9 @@ def impact_tag(scale):
 
 def compute_live_forecast(path_tag, lane, ov, horizon=6):
     """
-    Re-run a SARIMAX + XGBoost forecast using the user's X-factor overrides.
+    Re-run a live forecast using the user's X-factor overrides.
     Loads from the correct bundle file (path1_final_models.pkl / path2_final_models.pkl)
-    and builds the correct feature matrices for both SARIMAX and XGBoost.
+    and builds the correct feature matrices for both model components.
     Returns dict with 'dates', 'sarimax_pred', 'xgb_corr', 'stacked_pred' or None.
     """
     import traceback
@@ -591,10 +591,10 @@ with st.sidebar:
         if dev_pw == "antxyz2024":
             st.success("Developer mode unlocked")
             st.markdown("**Coefficient Multipliers**")
-            st.caption("Scale each variable's learned SARIMAX effect. 1.0 = model default. "
+            st.caption("Scale each variable's learned Baseline Model effect. 1.0 = model default. "
                        ">1 amplifies, <1 dampens. Use when you believe the model underweights a factor.")
             ov['coef_brent']   = st.slider("Brent coefficient ×", 0.0, 3.0, float(ov.get('coef_brent',1.0)),   0.05, key='cm_brent',
-                                           help="Multiplier on the SARIMAX Brent crude coefficient.")
+                                           help="Multiplier on the Baseline Model Brent crude coefficient.")
             ov['coef_usdcny']  = st.slider("USD/CNY coefficient ×", 0.0, 3.0, float(ov.get('coef_usdcny',1.0)),  0.05, key='cm_usdcny')
             ov['coef_bdry']    = st.slider("BDRY coefficient ×", 0.0, 3.0, float(ov.get('coef_bdry',1.0)),    0.05, key='cm_bdry')
             ov['coef_ukraine'] = st.slider("Ukraine coefficient ×", 0.0, 3.0, float(ov.get('coef_ukraine',1.0)), 0.05, key='cm_ukraine')
@@ -646,7 +646,7 @@ with st.sidebar:
 
     st.markdown("---")
     st.caption("Data: FRED · OECD · yfinance · Actual rate data")
-    st.caption("Model: SARIMAX + XGBoost Stacking")
+    st.caption("Model: Baseline Model + Adjustment Engine Stacking")
     st.caption("Impact scales: ITF-OECD 2024 · EIA 2023 · UNCTAD 2024")
 
 # ── Main header ────────────────────────────────────────────────────────────────
@@ -679,8 +679,8 @@ else:
         f'Brent: ATD {ov["brent_crude"]:.1f}/bbl | BDRY ETF: {ov["bdry_etf"]:.1f} | USD/CNY: {ov["usdcny"]:.2f}</p></div>',
         unsafe_allow_html=True)
 
-tabs = st.tabs(["📊 Overview", "📅 Seasonality", "🔵 Path 1 Forecast (A+C)",
-                "🟢 Path 2 Forecast (B+C)", "🎯 Validation 2025–2026",
+tabs = st.tabs(["📊 Overview", "📅 Seasonality", "🔵 Model with COVID",
+                "🟢 Stable Model", "🎯 Validation 2025–2026",
                 "⚖️ Model Comparison", "🗄️ Data Sources"])
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -697,13 +697,13 @@ with tabs[0]:
         st.metric("Lanes Modelled", "15")
     with c2:
         med1 = val1['val_sar_mape'].median() if not val1.empty else 0
-        st.metric("Path 1 Median MAPE", f"{med1:.1f}%", help="Jan 2025–Apr 2026 validation")
+        st.metric("Model with COVID — Median MAPE", f"{med1:.1f}%", help="Jan 2025–Apr 2026 validation")
     with c3:
         med2 = val2['val_sar_mape'].median() if not val2.empty else 0
-        st.metric("Path 2 Median MAPE", f"{med2:.1f}%", help="Jan 2025–Apr 2026 validation")
+        st.metric("Stable Model — Median MAPE", f"{med2:.1f}%", help="Jan 2025–Apr 2026 validation")
     with c4:
         winner_count = (comp_df['winner'] == 'Path1').sum() if not comp_df.empty else 0
-        st.metric("Path 1 Wins", f"{winner_count}/15 lanes")
+        st.metric("Model with COVID Wins", f"{winner_count}/15 lanes")
 
     st.markdown("---")
     st.markdown("### Historical Rate Chart — Selected Lane")
@@ -859,14 +859,14 @@ with tabs[1]:
     st.plotly_chart(fig_heat, use_container_width=True, key='heat_all')
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 3: PATH 1 FORECAST (A+C)
+# TAB 3: MODEL WITH COVID
 # ══════════════════════════════════════════════════════════════════════════════
 with tabs[2]:
-    st.markdown("## Path 1 Forecast — Full Data + Shock Dummies (A+C)")
+    st.markdown("## Model with COVID — Full Data + Shock Dummies")
 
     st.markdown("""
     <div class="formula-box">
-    Final Forecast = SARIMAX Prediction + XGBoost Residual Correction (±30% cap)<br>
+    Final Forecast = Baseline Model Prediction + Adjustment Engine Correction (±30% cap)<br>
     Training window: Jul 2019 – Dec 2024 · Exogenous: Brent, USD/CNY, BDRY, IndPro, CFNAI, China Exports + Conflict Dummies
     </div>
     """, unsafe_allow_html=True)
@@ -890,14 +890,14 @@ with tabs[2]:
     c1, c2, c3, c4 = st.columns(4)
     with c1:
         st.metric("Validation MAPE (SAR)", f"{sar_m1:.1f}%" if sar_m1 else "N/A",
-                  help="Jan 2025–Apr 2026 out-of-sample SARIMAX MAPE")
+                  help="Jan 2025–Apr 2026 out-of-sample Baseline Model MAPE")
     with c2:
         last_val = panel[sel_lane].dropna().iloc[-1]
         st.metric("Last Known Rate", f"ATD {last_val:.2f}")
     with c3:
         if fc1_data.get('stacked_pred'):
             st.metric("Next Month Forecast", f"ATD {fc1_data['stacked_pred'][0]:.2f}",
-                      help="SARIMAX + XGBoost correction with current X-factor settings")
+                      help="Baseline Model + Adjustment Engine correction with current X-factor settings")
     with c4:
         if fc1_data.get('stacked_pred'):
             st.metric("6-Month Forecast", f"ATD {fc1_data['stacked_pred'][-1]:.2f}")
@@ -925,7 +925,7 @@ with tabs[2]:
                 marker=dict(symbol='circle', size=6, color=C['navy'])))
             fig_fc.add_trace(go.Scatter(
                 x=vl1_df.index, y=vl1_df['sarimax_pred'], mode='lines',
-                name='Validation SARIMAX', line=dict(color=C['amber'], width=1.5, dash='dash')))
+                name='Validation Baseline', line=dict(color=C['amber'], width=1.5, dash='dash')))
             fig_fc.add_trace(go.Scatter(
                 x=vl1_df.index, y=vl1_df['stacked_pred'], mode='lines',
                 name='Validation Stacked', line=dict(color=C['teal'], width=1.5, dash='dash')))
@@ -934,7 +934,7 @@ with tabs[2]:
         dates_fc = pd.to_datetime(fc1_data['dates'])
         fig_fc.add_trace(go.Scatter(
             x=dates_fc, y=fc1_data['sarimax_pred'], mode='lines+markers',
-            name='SARIMAX Forecast', line=dict(color=C['amber'], width=2, dash='dash'),
+            name='Baseline Forecast', line=dict(color=C['amber'], width=2, dash='dash'),
             marker=dict(size=6)))
         fig_fc.add_trace(go.Scatter(
             x=dates_fc, y=fc1_data['stacked_pred'], mode='lines+markers',
@@ -955,7 +955,7 @@ with tabs[2]:
                          annotation_text="Validation Start", annotation_font_color=C['grey'])
 
         fig_fc.update_layout(**make_chart_layout(
-            f"Path 1 Forecast — {LANE_NAMES.get(sel_lane,sel_lane)} ({sel_lane})",
+            f"Model with COVID — {LANE_NAMES.get(sel_lane,sel_lane)} ({sel_lane})",
             ytitle="Rate (ATD / WM/RT)"))
         st.plotly_chart(fig_fc, use_container_width=True, key='p1_forecast')
 
@@ -968,9 +968,9 @@ with tabs[2]:
             xgb_v = fc1_data.get('xgb_corr', [0]*6)[h]
             rows.append({
                 'Month': dt[:7],
-                'SARIMAX': f"ATD {sar_v:.2f}",
-                'XGB Correction': f"ATD {xgb_v:+.2f}",
-                'Stacked (Final)': f"ATD {stk_v:.2f}",
+                'Baseline Model': f"ATD {sar_v:.2f}",
+                'Adjustment Engine': f"ATD {xgb_v:+.2f}",
+                'Final Forecast': f"ATD {stk_v:.2f}",
                 'Lower (−15%)': f"ATD {stk_v*0.85:.2f}",
                 'Upper (+15%)': f"ATD {stk_v*1.15:.2f}",
             })
@@ -984,7 +984,7 @@ with tabs[2]:
             </div>
             """, unsafe_allow_html=True)
     else:
-        st.info("No Path 1 forecast available for this lane.")
+        st.info("No Model with COVID forecast available for this lane.")
 
     # Backtest chart
     if not bt1_df.empty:
@@ -994,24 +994,24 @@ with tabs[2]:
                                     mode='lines', name='Actual',
                                     line=dict(color=C['navy'], width=2)))
         fig_bt.add_trace(go.Scatter(x=bt1_df.index, y=bt1_df['sarimax_pred'],
-                                    mode='lines', name='SARIMAX',
+                                    mode='lines', name='Baseline Model',
                                     line=dict(color=C['amber'], width=1.5, dash='dash')))
         fig_bt.add_trace(go.Scatter(x=bt1_df.index, y=bt1_df['stacked_pred'],
-                                    mode='lines', name='Stacked',
+                                    mode='lines', name='Final Forecast',
                                     line=dict(color=C['teal'], width=1.5, dash='dot')))
-        fig_bt.update_layout(**make_chart_layout("Path 1 — Walk-Forward Backtest",
+        fig_bt.update_layout(**make_chart_layout("Model with COVID — Walk-Forward Backtest",
                                                   ytitle="Rate (ATD / WM/RT)"))
         st.plotly_chart(fig_bt, use_container_width=True, key='p1_backtest')
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 4: PATH 2 FORECAST (B+C)
+# TAB 4: STABLE MODEL
 # ══════════════════════════════════════════════════════════════════════════════
 with tabs[3]:
-    st.markdown("## Path 2 Forecast — Post-Jul 2022 Split (B+C)")
+    st.markdown("## Stable Model — Post-Jul 2022 Split")
 
     st.markdown("""
     <div class="formula-box">
-    Final Forecast = SARIMAX Prediction + XGBoost Residual Correction (±30% cap)<br>
+    Final Forecast = Baseline Model Prediction + Adjustment Engine Correction (±30% cap)<br>
     Training window: Jul 2022 – Dec 2024 (normalised post-shock market only)
     </div>
     """, unsafe_allow_html=True)
@@ -1059,7 +1059,7 @@ with tabs[3]:
                                           line=dict(color=C['navy'], width=2),
                                           marker=dict(size=6, color=C['navy'])))
             fig_fc2.add_trace(go.Scatter(x=vl2_df.index, y=vl2_df['sarimax_pred'],
-                                          mode='lines', name='Validation SARIMAX',
+                                          mode='lines', name='Validation Baseline',
                                           line=dict(color=C['amber'], width=1.5, dash='dash')))
             fig_fc2.add_trace(go.Scatter(x=vl2_df.index, y=vl2_df['stacked_pred'],
                                           mode='lines', name='Validation Stacked',
@@ -1068,7 +1068,7 @@ with tabs[3]:
         dates_fc2 = pd.to_datetime(fc2_data['dates'])
         fig_fc2.add_trace(go.Scatter(
             x=dates_fc2, y=fc2_data['sarimax_pred'], mode='lines+markers',
-            name='SARIMAX Forecast', line=dict(color=C['amber'], width=2, dash='dash'),
+            name='Baseline Forecast', line=dict(color=C['amber'], width=2, dash='dash'),
             marker=dict(size=6)))
         fig_fc2.add_trace(go.Scatter(
             x=dates_fc2, y=fc2_data['stacked_pred'], mode='lines+markers',
@@ -1090,7 +1090,7 @@ with tabs[3]:
                           annotation_text="Validation Start", annotation_font_color=C['amber'])
 
         fig_fc2.update_layout(**make_chart_layout(
-            f"Path 2 Forecast — {LANE_NAMES.get(sel_lane,sel_lane)} ({sel_lane})",
+            f"Stable Model — {LANE_NAMES.get(sel_lane,sel_lane)} ({sel_lane})",
             ytitle="Rate (ATD / WM/RT)"))
         st.plotly_chart(fig_fc2, use_container_width=True, key='p2_forecast')
 
@@ -1102,15 +1102,15 @@ with tabs[3]:
             xgb_v = fc2_data.get('xgb_corr', [0]*6)[h]
             rows.append({
                 'Month': dt[:7],
-                'SARIMAX': f"ATD {sar_v:.2f}",
-                'XGB Correction': f"ATD {xgb_v:+.2f}",
-                'Stacked (Final)': f"ATD {stk_v:.2f}",
+                'Baseline Model': f"ATD {sar_v:.2f}",
+                'Adjustment Engine': f"ATD {xgb_v:+.2f}",
+                'Final Forecast': f"ATD {stk_v:.2f}",
                 'Lower (−15%)': f"ATD {stk_v*0.85:.2f}",
                 'Upper (+15%)': f"ATD {stk_v*1.15:.2f}",
             })
         st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
     else:
-        st.info("No Path 2 forecast available for this lane.")
+        st.info("No Stable Model forecast available for this lane.")
 
     if not bt2_df.empty:
         st.markdown("#### Walk-Forward Backtest — Actual vs Predicted")
@@ -1119,12 +1119,12 @@ with tabs[3]:
                                      mode='lines', name='Actual',
                                      line=dict(color=C['navy'], width=2)))
         fig_bt2.add_trace(go.Scatter(x=bt2_df.index, y=bt2_df['sarimax_pred'],
-                                     mode='lines', name='SARIMAX',
+                                     mode='lines', name='Baseline Model',
                                      line=dict(color=C['amber'], width=1.5, dash='dash')))
         fig_bt2.add_trace(go.Scatter(x=bt2_df.index, y=bt2_df['stacked_pred'],
-                                     mode='lines', name='Stacked',
+                                     mode='lines', name='Final Forecast',
                                      line=dict(color=C['teal'], width=1.5, dash='dot')))
-        fig_bt2.update_layout(**make_chart_layout("Path 2 — Walk-Forward Backtest",
+        fig_bt2.update_layout(**make_chart_layout("Stable Model — Walk-Forward Backtest",
                                                    ytitle="Rate (ATD / WM/RT)"))
         st.plotly_chart(fig_bt2, use_container_width=True, key='p2_backtest')
 
@@ -1151,20 +1151,20 @@ with tabs[4]:
                                          line=dict(color=C['navy'], width=3),
                                          marker=dict(size=8)))
             fig_val.add_trace(go.Scatter(x=vl1.index, y=vl1['sarimax_pred'],
-                                         mode='lines+markers', name='Path 1 SARIMAX',
+                                         mode='lines+markers', name='Model with COVID Baseline',
                                          line=dict(color=C['blue'], width=2, dash='dash'),
                                          marker=dict(size=6)))
             fig_val.add_trace(go.Scatter(x=vl1.index, y=vl1['stacked_pred'],
-                                         mode='lines+markers', name='Path 1 Stacked',
+                                         mode='lines+markers', name='Model with COVID Final',
                                          line=dict(color=C['teal'], width=2, dash='dot'),
                                          marker=dict(size=6)))
         if not vl2.empty:
             fig_val.add_trace(go.Scatter(x=vl2.index, y=vl2['sarimax_pred'],
-                                         mode='lines+markers', name='Path 2 SARIMAX',
+                                         mode='lines+markers', name='Stable Model Baseline',
                                          line=dict(color=C['green'], width=2, dash='dash'),
                                          marker=dict(size=6)))
             fig_val.add_trace(go.Scatter(x=vl2.index, y=vl2['stacked_pred'],
-                                         mode='lines+markers', name='Path 2 Stacked',
+                                         mode='lines+markers', name='Stable Model Final',
                                          line=dict(color=C['amber'], width=2, dash='dot'),
                                          marker=dict(size=6)))
 
@@ -1180,7 +1180,7 @@ with tabs[4]:
         if not val1_row.empty or not val2_row.empty:
             st.markdown("#### Validation Metrics")
             metric_rows = []
-            for tag, row_df in [('Path 1 (A+C)', val1_row), ('Path 2 (B+C)', val2_row)]:
+            for tag, row_df in [('Model with COVID', val1_row), ('Stable Model', val2_row)]:
                 if not row_df.empty:
                     r = row_df.iloc[0]
                     metric_rows.append({
@@ -1198,36 +1198,36 @@ with tabs[4]:
 # TAB 6: MODEL COMPARISON
 # ══════════════════════════════════════════════════════════════════════════════
 with tabs[5]:
-    st.markdown("## Model Comparison — Path 1 vs Path 2")
+    st.markdown("## Model Comparison — Model with COVID vs Stable Model")
 
     if not comp_df.empty:
         c1, c2, c3 = st.columns(3)
         with c1:
             p1_wins = (comp_df['winner'] == 'Path1').sum()
-            st.metric("Path 1 Wins", f"{p1_wins}/15 lanes")
+            st.metric("Model with COVID Wins", f"{p1_wins}/15 lanes")
         with c2:
             p2_wins = (comp_df['winner'] == 'Path2').sum()
-            st.metric("Path 2 Wins", f"{p2_wins}/15 lanes")
+            st.metric("Stable Model Wins", f"{p2_wins}/15 lanes")
         with c3:
             med_diff = (comp_df['P1_SAR_MAPE'] - comp_df['P2_SAR_MAPE']).median()
             st.metric("Median MAPE Difference", f"{med_diff:+.1f}%",
-                      help="Positive = Path 2 is better on average")
+                      help="Positive = Stable Model is better on average")
 
         fig_comp = go.Figure()
         fig_comp.add_trace(go.Bar(
             x=comp_df['lane'], y=comp_df['P1_SAR_MAPE'],
-            name='Path 1 SARIMAX MAPE', marker_color=C['blue']))
+            name='Model with COVID Baseline MAPE', marker_color=C['blue']))
         fig_comp.add_trace(go.Bar(
             x=comp_df['lane'], y=comp_df['P2_SAR_MAPE'],
-            name='Path 2 SARIMAX MAPE', marker_color=C['green']))
+            name='Stable Model Baseline MAPE', marker_color=C['green']))
         fig_comp.update_layout(**make_chart_layout(
-            "SARIMAX MAPE by Lane — Path 1 vs Path 2",
+            "Baseline Model MAPE by Lane — Model with COVID vs Stable Model",
             ytitle="MAPE (%)"), barmode='group')
         st.plotly_chart(fig_comp, use_container_width=True, key='comp_bar')
 
         # Winner table
         disp = comp_df.copy()
-        disp['Winner'] = disp['winner'].map({'Path1': '🔵 Path 1', 'Path2': '🟢 Path 2'})
+        disp['Winner'] = disp['winner'].map({'Path1': '🔵 Model with COVID', 'Path2': '🟢 Stable Model'})
         disp['P1 MAPE'] = disp['P1_SAR_MAPE'].apply(lambda x: f"{x:.1f}%")
         disp['P2 MAPE'] = disp['P2_SAR_MAPE'].apply(lambda x: f"{x:.1f}%")
         disp['Destination'] = disp['lane'].map(LANE_NAMES)
@@ -1238,9 +1238,9 @@ with tabs[5]:
 
     st.markdown("""
     <div class="info-box">
-    <p><strong>Path 1 (A+C):</strong> Full history Jul 2019–Dec 2024 with explicit shock dummies for COVID and supply crunch.
+    <p><strong>Model with COVID:</strong> Full history Jul 2019–Dec 2024 with explicit shock dummies for COVID and supply crunch.
     Better for lanes with stable seasonality and sufficient pre-shock data.</p>
-    <p><strong>Path 2 (B+C):</strong> Post-Jul 2022 only — excludes the extreme 2021–2022 spike period.
+    <p><strong>Stable Model:</strong> Post-Jul 2022 only — excludes the extreme 2021–2022 spike period.
     Better for volatile lanes where the spike period distorts the model's baseline.</p>
     </div>
     """, unsafe_allow_html=True)
@@ -1286,7 +1286,7 @@ with tabs[6]:
     <p><strong>Hormuz mechanism:</strong> The Strait of Hormuz controls ~25% of global seaborne oil but
     carries negligible container trade. Its impact on FCL rates is therefore modelled as an
     <em>indirect oil price shock</em> (+40% uplift to Brent crude when toggle is active), which then
-    propagates through the SARIMAX Brent coefficient. Middle East lanes (QAHMD, AEJEA) additionally
+    propagates through the Baseline Model Brent coefficient. Middle East lanes (QAHMD, AEJEA) additionally
     receive a direct 50% surcharge dummy.</p>
     <p><strong>Linear scaling:</strong> Impact = toggle_value × lane_scale × coefficient_multiplier.
     A scale of 100% means the full effect learned from training data is applied.
