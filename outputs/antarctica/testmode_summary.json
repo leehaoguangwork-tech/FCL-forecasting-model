@@ -1,0 +1,22 @@
+{
+  "THBKK": {
+    "baseline_sar_mape": 6.24,
+    "baseline_stk_mape": 4.6,
+    "triple_sar_mape": 20.86,
+    "triple_final_mape": 14.44,
+    "improvement_pp": -9.84,
+    "n_train": 54,
+    "n_val": 15,
+    "lstm_epochs": 18
+  },
+  "USLAX": {
+    "baseline_sar_mape": 37.72,
+    "baseline_stk_mape": 31.01,
+    "triple_sar_mape": 104.05,
+    "triple_final_mape": 76.25,
+    "improvement_pp": -45.24,
+    "n_train": 53,
+    "n_val": 15,
+    "lstm_epochs": 16
+  }
+}

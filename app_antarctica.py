@@ -680,7 +680,7 @@ else:
         unsafe_allow_html=True)
 
 tabs = st.tabs(["📊 Overview", "📅 Seasonality", "🔵 Model with COVID",
-                "🟢 Stable Model", "🎯 Validation 2025–2026",
+                "🟢 Stable Model", "🔴 Test Mode", "🎯 Validation 2025–2026",
                 "⚖️ Model Comparison", "🗄️ Data Sources"])
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1129,9 +1129,203 @@ with tabs[3]:
         st.plotly_chart(fig_bt2, use_container_width=True, key='p2_backtest')
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 5: VALIDATION 2025–2026
+# TAB 5: TEST MODE — SARIMAX → LSTM → XGBoost Triple-Stack
 # ══════════════════════════════════════════════════════════════════════════════
 with tabs[4]:
+    st.markdown("## 🔴 Test Mode — Triple-Stack Architecture")
+    st.markdown("""
+    <div class="warn-box">
+    <p>⚠️ <strong>Experimental.</strong> This tab tests a three-layer architecture:
+    <strong>Baseline Model → LSTM → Adjustment Engine</strong>.
+    The LSTM learns temporal patterns in the Baseline Model residuals before passing
+    them to the Adjustment Engine. Trained on two lanes only:
+    <strong>THBKK</strong> (lowest MAPE) and <strong>USLAX</strong> (highest MAPE).
+    Results are compared directly against the current Baseline Model + Adjustment Engine stack.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Load test mode summary
+    tm_summary_fp = os.path.join(OUT, 'testmode_summary.json')
+    if not os.path.exists(tm_summary_fp):
+        st.error("Test mode outputs not found. Run train_lstm_stack.py first.")
+    else:
+        with open(tm_summary_fp) as f:
+            tm_summary = json.load(f)
+
+        # ── Architecture diagram ──────────────────────────────────────────────
+        st.markdown("### Architecture")
+        st.markdown("""
+        <div class="formula-box">
+        Layer 1 — Baseline Model: captures linear trend + seasonality + macro exog<br>
+        Layer 2 — LSTM (NEW): learns temporal patterns in Baseline Model residuals (6-month lookback)<br>
+        Layer 3 — Adjustment Engine: final non-linear correction using all features + LSTM output<br>
+        <br>
+        Final = Baseline Model Prediction + Adjustment Engine Correction (±30% cap)
+        </div>
+        """, unsafe_allow_html=True)
+
+        # ── MAPE Comparison Summary ───────────────────────────────────────────
+        st.markdown("### Accuracy Comparison — Validation Jan 2025 – Mar 2026")
+        st.caption("Lower MAPE = better. Positive improvement = triple-stack is worse (LSTM adds noise at this data scale).")
+
+        comp_rows = []
+        for lane, res in tm_summary.items():
+            lane_name = {'THBKK': 'Thailand – Bangkok', 'USLAX': 'USA – Los Angeles'}.get(lane, lane)
+            imp = res['improvement_pp']
+            comp_rows.append({
+                'Lane': lane,
+                'Destination': lane_name,
+                'Baseline Model MAPE': f"{res['baseline_sar_mape']:.1f}%",
+                'Baseline Final MAPE': f"{res['baseline_stk_mape']:.1f}%",
+                'Triple-Stack MAPE': f"{res['triple_final_mape']:.1f}%",
+                'Change vs Baseline': f"{imp:+.1f}pp",
+                'Verdict': '✅ Better' if imp > 0 else '❌ Worse',
+                'Train Obs': res['n_train'],
+                'LSTM Epochs': res['lstm_epochs'],
+            })
+        st.dataframe(pd.DataFrame(comp_rows), use_container_width=True, hide_index=True)
+
+        # ── Per-lane detailed charts ──────────────────────────────────────────
+        for lane in ['THBKK', 'USLAX']:
+            lane_name = {'THBKK': 'Thailand – Bangkok', 'USLAX': 'USA – Los Angeles'}.get(lane, lane)
+            res = tm_summary.get(lane, {})
+
+            st.markdown(f"---")
+            st.markdown(f"### {lane} — {lane_name}")
+
+            # Metrics row
+            mc1, mc2, mc3, mc4 = st.columns(4)
+            with mc1:
+                st.metric("Baseline Model MAPE", f"{res.get('baseline_sar_mape', 0):.1f}%",
+                          help="SARIMAX-only validation MAPE (Jan 2025–Mar 2026)")
+            with mc2:
+                st.metric("Baseline Final MAPE", f"{res.get('baseline_stk_mape', 0):.1f}%",
+                          help="Baseline Model + Adjustment Engine validation MAPE")
+            with mc3:
+                st.metric("Triple-Stack MAPE", f"{res.get('triple_final_mape', 0):.1f}%",
+                          help="Baseline Model + LSTM + Adjustment Engine validation MAPE")
+            with mc4:
+                imp = res.get('improvement_pp', 0)
+                st.metric("MAPE Change", f"{imp:+.1f}pp",
+                          delta=f"{imp:+.1f}pp",
+                          delta_color="normal" if imp > 0 else "inverse",
+                          help="Positive = triple-stack improved; Negative = triple-stack is worse")
+
+            # Load validation data
+            val_fp  = os.path.join(OUT, f'testmode_{lane}_validation.csv')
+            bt_fp   = os.path.join(OUT, f'testmode_{lane}_backtest.csv')
+            bl_val_fp = os.path.join(OUT, f'path1_validation_{lane}.csv')
+
+            if os.path.exists(val_fp):
+                val_tm  = pd.read_csv(val_fp, index_col=0, parse_dates=True)
+                bl_val  = pd.read_csv(bl_val_fp, index_col=0, parse_dates=True) if os.path.exists(bl_val_fp) else pd.DataFrame()
+
+                # Validation chart
+                fig_tm = go.Figure()
+
+                # Actual
+                fig_tm.add_trace(go.Scatter(
+                    x=val_tm.index, y=val_tm['actual'],
+                    mode='lines+markers', name='Actual Rate',
+                    line=dict(color=C['navy'], width=3),
+                    marker=dict(size=8)))
+
+                # Baseline Model prediction (from path1 validation)
+                if not bl_val.empty:
+                    fig_tm.add_trace(go.Scatter(
+                        x=bl_val.index, y=bl_val['sarimax_pred'],
+                        mode='lines+markers', name='Baseline Model',
+                        line=dict(color=C['amber'], width=2, dash='dash'),
+                        marker=dict(size=6)))
+                    fig_tm.add_trace(go.Scatter(
+                        x=bl_val.index, y=bl_val['stacked_pred'],
+                        mode='lines+markers', name='Baseline Final (2-layer)',
+                        line=dict(color=C['teal'], width=2, dash='dot'),
+                        marker=dict(size=6)))
+
+                # Triple-stack prediction
+                fig_tm.add_trace(go.Scatter(
+                    x=val_tm.index, y=val_tm['triple_stack'],
+                    mode='lines+markers', name='Triple-Stack (3-layer)',
+                    line=dict(color=C['red'], width=2.5),
+                    marker=dict(size=7, symbol='diamond')))
+
+                fig_tm.update_layout(**make_chart_layout(
+                    f"Validation Comparison — {lane_name} ({lane})",
+                    ytitle="Rate (ATD / WM/RT)"))
+                st.plotly_chart(fig_tm, use_container_width=True, key=f'tm_val_{lane}')
+
+                # Validation table
+                st.markdown("#### Validation Table")
+                vt_rows = []
+                for i, row in val_tm.iterrows():
+                    bl_pred = bl_val.loc[i, 'stacked_pred'] if (not bl_val.empty and i in bl_val.index) else None
+                    bl_err  = abs(row['actual'] - bl_pred) / row['actual'] * 100 if bl_pred else None
+                    ts_err  = abs(row['actual'] - row['triple_stack']) / row['actual'] * 100
+                    vt_rows.append({
+                        'Month': str(i)[:7],
+                        'Actual': f"ATD {row['actual']:.2f}",
+                        'Baseline Final': f"ATD {bl_pred:.2f}" if bl_pred else 'N/A',
+                        'Baseline Error': f"{bl_err:.1f}%" if bl_err else 'N/A',
+                        'Triple-Stack': f"ATD {row['triple_stack']:.2f}",
+                        'Triple Error': f"{ts_err:.1f}%",
+                        'Better': '✅ Triple' if (bl_err and ts_err < bl_err) else ('✅ Baseline' if bl_err else '—'),
+                    })
+                st.dataframe(pd.DataFrame(vt_rows), use_container_width=True, hide_index=True)
+
+            # Backtest chart
+            if os.path.exists(bt_fp):
+                bt_tm = pd.read_csv(bt_fp, index_col=0, parse_dates=True)
+                bl_bt_fp = os.path.join(OUT, f'path1_backtest_{lane}.csv')
+                bl_bt = pd.read_csv(bl_bt_fp, index_col=0, parse_dates=True) if os.path.exists(bl_bt_fp) else pd.DataFrame()
+
+                st.markdown("#### Walk-Forward Backtest Comparison")
+                fig_bt_tm = go.Figure()
+
+                if not bl_bt.empty:
+                    fig_bt_tm.add_trace(go.Scatter(
+                        x=bl_bt.index, y=bl_bt['actual'],
+                        mode='lines', name='Actual',
+                        line=dict(color=C['navy'], width=2)))
+                    fig_bt_tm.add_trace(go.Scatter(
+                        x=bl_bt.index, y=bl_bt['stacked_pred'],
+                        mode='lines', name='Baseline Final (2-layer)',
+                        line=dict(color=C['teal'], width=1.5, dash='dot')))
+
+                fig_bt_tm.add_trace(go.Scatter(
+                    x=bt_tm.index, y=bt_tm['triple_stack'],
+                    mode='lines', name='Triple-Stack (3-layer)',
+                    line=dict(color=C['red'], width=2)))
+
+                fig_bt_tm.update_layout(**make_chart_layout(
+                    f"Backtest Comparison — {lane_name} ({lane})",
+                    ytitle="Rate (ATD / WM/RT)"))
+                st.plotly_chart(fig_bt_tm, use_container_width=True, key=f'tm_bt_{lane}')
+
+        # ── Interpretation ───────────────────────────────────────────────────
+        st.markdown("---")
+        st.markdown("### Interpretation")
+        st.markdown("""
+        <div class="info-box">
+        <p><strong>Why the triple-stack may underperform:</strong><br>
+        With only ~54 monthly observations per lane, the LSTM has insufficient data to learn
+        generalised temporal patterns. It tends to overfit the training residuals, producing
+        larger errors on the unseen validation period. This confirms the theoretical expectation:
+        LSTM requires substantially more data (typically 500+ sequences) to outperform simpler models.</p>
+        <p><strong>When to revisit this architecture:</strong><br>
+        If weekly or daily freight rate data becomes available (expanding observations by 4–30×),
+        the LSTM layer would have enough signal to learn meaningful residual dynamics and is
+        likely to improve accuracy — particularly for high-volatility lanes like USLAX.</p>
+        <p><strong>Current recommendation:</strong> The two-layer Baseline Model + Adjustment Engine
+        stack remains the production model. This tab is retained for ongoing research and
+        re-evaluation as data volume grows.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 6: VALIDATION 2025–2026
+# ══════════════════════════════════════════════════════════════════════════════
+with tabs[5]:
     st.markdown("## True Out-of-Sample Validation — Jan 2025 to Apr 2026")
     st.markdown("""
     <div class="info-box">
@@ -1195,9 +1389,9 @@ with tabs[4]:
         st.info("Validation data not yet available. Share Jan 2025–Apr 2026 actual rates to populate this tab.")
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 6: MODEL COMPARISON
+# TAB 7: MODEL COMPARISON
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[5]:
+with tabs[6]:
     st.markdown("## Model Comparison — Model with COVID vs Stable Model")
 
     if not comp_df.empty:
@@ -1246,9 +1440,9 @@ with tabs[5]:
     """, unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 7: DATA SOURCES
+# TAB 8: DATA SOURCES
 # ══════════════════════════════════════════════════════════════════════════════
-with tabs[6]:
+with tabs[7]:
     st.markdown("## Data Sources")
 
     st.markdown("""
