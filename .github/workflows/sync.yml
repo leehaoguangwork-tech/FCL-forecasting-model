@@ -2,22 +2,25 @@ name: Sync Fork
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 * * * *'
- 
+    - cron: '*/15 * * * *'
+
 jobs:
   sync:
     runs-on: ubuntu-latest
     permissions:
       contents: write
- 
+
     steps:
+      - name: Start timer
+        run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
+
       - name: Checkout fork
         uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
- 
+
       - name: Add upstream and sync
         run: |
           git config user.name "github-actions[bot]"
@@ -26,3 +29,9 @@ jobs:
           git fetch upstream
           git merge upstream/main --no-edit --allow-unrelated-histories
           git push origin main
+
+      - name: Log duration
+        run: |
+          END_TIME=$(date +%s)
+          DURATION=$((END_TIME - START_TIME))
+          echo "✅ Sync completed in $DURATION seconds"
