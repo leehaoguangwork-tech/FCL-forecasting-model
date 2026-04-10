@@ -4,9 +4,15 @@ on:
   schedule:
     - cron: '0 * * * *'
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
       - name: Sync Fork
         uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
