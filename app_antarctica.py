@@ -1258,9 +1258,9 @@ with tabs[6]:
     | **OECD SDMX REST** | China CLI, US CLI | Free (no key) | Leading indicators |
     | **Yahoo Finance / yfinance** | BDRY ETF (`BDRY`) | Free (no key) | Dry bulk shipping proxy (BDI) |
     | **Actual Rate Data** | FCL rates Antarctica → World | Proprietary | Target variable (WM/RT in ATD) |
-    | **ITF-OECD 2024** | Red Sea crisis lane impact data | Free (public report) | Conflict impact scaling matrix |
-    | **EIA 2023** | Strait of Hormuz oil flow data | Free (public) | Hormuz oil-shock mechanism |
-    | **UNCTAD 2024** | Global trade chokepoint data | Free (public) | Impact matrix calibration |
+    | [**ITF-OECD 2024**](https://www.itf-oecd.org/sites/default/files/docs/maritime-freight-costs-red-sea-crisis.pdf) | Red Sea crisis lane impact data | Free (public report) | Conflict impact scaling matrix |
+    | [**EIA 2023**](https://www.eia.gov/international/analysis/regions-of-interest/Strait_of_Hormuz) | Strait of Hormuz oil flow data | Free (public) | Hormuz oil-shock mechanism |
+    | [**UNCTAD 2024**](https://unctad.org/publication/review-maritime-transport-2024) | Global trade chokepoint data | Free (public) | Impact matrix calibration |
     """)
 
     st.markdown("---")
@@ -1291,5 +1291,9 @@ with tabs[6]:
     <p><strong>Linear scaling:</strong> Impact = toggle_value × lane_scale × coefficient_multiplier.
     A scale of 100% means the full effect learned from training data is applied.
     A scale of 15% means only 15% of the full effect is applied to that lane.</p>
+    <p><strong>Sources:</strong>
+    <a href="https://www.itf-oecd.org/sites/default/files/docs/maritime-freight-costs-red-sea-crisis.pdf" target="_blank">ITF-OECD 2024 — Maritime Freight Costs and the Red Sea Crisis</a> &nbsp;|
+    <a href="https://www.eia.gov/international/analysis/regions-of-interest/Strait_of_Hormuz" target="_blank">EIA 2023 — Strait of Hormuz</a> &nbsp;|
+    <a href="https://unctad.org/publication/review-maritime-transport-2024" target="_blank">UNCTAD 2024 — Review of Maritime Transport</a></p>
     </div>
     """, unsafe_allow_html=True)
