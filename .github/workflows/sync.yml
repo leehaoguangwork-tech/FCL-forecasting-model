@@ -1,16 +1,16 @@
 name: Sync Fork
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 * * * *'
+ workflow_dispatch:
+ schedule:
+   - cron: '0 * * * *'
 jobs:
   sync:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Sync fork
-        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
-        with:
-          upstream_sync_repo: Alex8338/FCL-forecasting-model
-          upstream_sync_branch: main
-          target_sync_branch: main
-          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+   runs-on: ubuntu-latest
+   steps:
+     - name: Sync Fork
+       uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
+       with:
+         upstream_sync_repo: Alex8338/FCL-forecasting-model
+         upstream_sync_branch: main
+         target_sync_branch: main
+         target_repo_token: ${{ secrets.GITHUB_TOKEN }}
