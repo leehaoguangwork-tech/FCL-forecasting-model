@@ -1,0 +1,16 @@
+lane,reliability,cv,bt_sar_mape,bt_stk_mape,val_sar_mape,val_stk_mape,val_n
+CNSHA,High,0.293,10.42,13.3,,,1
+JPTYO,High,0.296,10.06,21.55,,,1
+KRPUS,High,0.332,15.27,17.17,,,1
+INNSA,Low,0.376,182.13,182.13,,,1
+THBKK,Medium,0.217,21.58,32.81,,,1
+DEHAM,Low,0.621,43.24,43.78,,,1
+NLRTM,Low,0.573,207.84,206.9,,,1
+GBFXT,Low,0.61,85.57,79.47,,,1
+USNYC,Medium,0.365,26.36,25.11,,,1
+USLAX,Low,0.432,55.81,43.27,,,1
+ARBUE,Low,0.534,138.44,100.04,,,1
+AEJEA,Medium,0.397,14.44,17.7,,,1
+NGLOS,Low,0.305,109.57,104.74,,,1
+AUSYD,Low,0.648,272.76,272.76,,,1
+QAHMD,Low,0.455,58.26,55.72,,,1

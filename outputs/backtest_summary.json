@@ -1,0 +1,28 @@
+{
+  "run_at": "2026-04-07T22:44:19.395930",
+  "n_periods": 30,
+  "min_train": 18,
+  "metrics": {
+    "xgb_pred_h1": {
+      "n_obs": 30,
+      "mae": 651.5,
+      "rmse": 843.7,
+      "mape": 21.98,
+      "dir_acc": 82.8
+    },
+    "sar_pred_h1": {
+      "n_obs": 30,
+      "mae": 400.3,
+      "rmse": 696.1,
+      "mape": 11.13,
+      "dir_acc": 82.8
+    },
+    "ens_pred_h1": {
+      "n_obs": 30,
+      "mae": 451.2,
+      "rmse": 620.6,
+      "mape": 14.41,
+      "dir_acc": 96.6
+    }
+  }
+}

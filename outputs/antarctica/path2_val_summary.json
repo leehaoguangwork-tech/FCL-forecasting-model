@@ -1,0 +1,242 @@
+{
+  "CNSHA": {
+    "sarimax": {
+      "mae": 1.95,
+      "rmse": 2.2,
+      "mape": 14.21,
+      "dir_acc": 7.14,
+      "n": 15
+    },
+    "stacked": {
+      "mae": 1.9,
+      "rmse": 2.11,
+      "mape": 13.82,
+      "dir_acc": 7.14,
+      "n": 15
+    }
+  },
+  "JPTYO": {
+    "sarimax": {
+      "mae": 1.0,
+      "rmse": 1.23,
+      "mape": 6.71,
+      "dir_acc": 35.71,
+      "n": 15
+    },
+    "stacked": {
+      "mae": 1.16,
+      "rmse": 1.4,
+      "mape": 7.75,
+      "dir_acc": 35.71,
+      "n": 15
+    }
+  },
+  "KRPUS": {
+    "sarimax": {
+      "mae": 1.36,
+      "rmse": 1.52,
+      "mape": 9.66,
+      "dir_acc": 14.29,
+      "n": 15
+    },
+    "stacked": {
+      "mae": 1.12,
+      "rmse": 1.32,
+      "mape": 7.96,
+      "dir_acc": 14.29,
+      "n": 15
+    }
+  },
+  "INNSA": {
+    "sarimax": {
+      "mae": 9.63,
+      "rmse": 13.48,
+      "mape": 33.61,
+      "dir_acc": 42.86,
+      "n": 15
+    },
+    "stacked": {
+      "mae": 15.46,
+      "rmse": 18.99,
+      "mape": 51.33,
+      "dir_acc": 50.0,
+      "n": 15
+    }
+  },
+  "THBKK": {
+    "sarimax": {
+      "mae": 1.68,
+      "rmse": 1.89,
+      "mape": 10.69,
+      "dir_acc": 21.43,
+      "n": 15
+    },
+    "stacked": {
+      "mae": 1.49,
+      "rmse": 1.64,
+      "mape": 9.45,
+      "dir_acc": 14.29,
+      "n": 15
+    }
+  },
+  "DEHAM": {
+    "sarimax": {
+      "mae": 19.57,
+      "rmse": 23.15,
+      "mape": 21.98,
+      "dir_acc": 64.29,
+      "n": 15
+    },
+    "stacked": {
+      "mae": 17.73,
+      "rmse": 20.13,
+      "mape": 19.93,
+      "dir_acc": 57.14,
+      "n": 15
+    }
+  },
+  "NLRTM": {
+    "sarimax": {
+      "mae": 28.68,
+      "rmse": 35.42,
+      "mape": 50.14,
+      "dir_acc": 42.86,
+      "n": 15
+    },
+    "stacked": {
+      "mae": 29.45,
+      "rmse": 43.44,
+      "mape": 48.07,
+      "dir_acc": 42.86,
+      "n": 15
+    }
+  },
+  "GBFXT": {
+    "sarimax": {
+      "mae": 27.86,
+      "rmse": 36.59,
+      "mape": 51.65,
+      "dir_acc": 28.57,
+      "n": 15
+    },
+    "stacked": {
+      "mae": 40.92,
+      "rmse": 52.52,
+      "mape": 71.49,
+      "dir_acc": 28.57,
+      "n": 15
+    }
+  },
+  "USNYC": {
+    "sarimax": {
+      "mae": 40.58,
+      "rmse": 54.03,
+      "mape": 42.36,
+      "dir_acc": 57.14,
+      "n": 15
+    },
+    "stacked": {
+      "mae": 45.7,
+      "rmse": 56.03,
+      "mape": 44.16,
+      "dir_acc": 57.14,
+      "n": 15
+    }
+  },
+  "USLAX": {
+    "sarimax": {
+      "mae": 29.75,
+      "rmse": 37.35,
+      "mape": 41.75,
+      "dir_acc": 42.86,
+      "n": 15
+    },
+    "stacked": {
+      "mae": 31.02,
+      "rmse": 36.24,
+      "mape": 39.37,
+      "dir_acc": 42.86,
+      "n": 15
+    }
+  },
+  "ARBUE": {
+    "sarimax": {
+      "mae": 23.17,
+      "rmse": 31.76,
+      "mape": 28.88,
+      "dir_acc": 50.0,
+      "n": 15
+    },
+    "stacked": {
+      "mae": 21.54,
+      "rmse": 29.15,
+      "mape": 27.57,
+      "dir_acc": 50.0,
+      "n": 15
+    }
+  },
+  "AEJEA": {
+    "sarimax": {
+      "mae": 15.44,
+      "rmse": 20.0,
+      "mape": 47.62,
+      "dir_acc": 21.43,
+      "n": 15
+    },
+    "stacked": {
+      "mae": 16.85,
+      "rmse": 19.65,
+      "mape": 51.41,
+      "dir_acc": 21.43,
+      "n": 15
+    }
+  },
+  "NGLOS": {
+    "sarimax": {
+      "mae": 13.4,
+      "rmse": 16.35,
+      "mape": 11.44,
+      "dir_acc": 42.86,
+      "n": 15
+    },
+    "stacked": {
+      "mae": 10.92,
+      "rmse": 13.94,
+      "mape": 9.21,
+      "dir_acc": 50.0,
+      "n": 15
+    }
+  },
+  "AUSYD": {
+    "sarimax": {
+      "mae": 5.21,
+      "rmse": 7.06,
+      "mape": 12.77,
+      "dir_acc": 42.86,
+      "n": 15
+    },
+    "stacked": {
+      "mae": 12.25,
+      "rmse": 13.8,
+      "mape": 30.17,
+      "dir_acc": 42.86,
+      "n": 15
+    }
+  },
+  "QAHMD": {
+    "sarimax": {
+      "mae": 19.18,
+      "rmse": 25.61,
+      "mape": 50.15,
+      "dir_acc": 28.57,
+      "n": 15
+    },
+    "stacked": {
+      "mae": 11.46,
+      "rmse": 15.44,
+      "mape": 30.12,
+      "dir_acc": 28.57,
+      "n": 15
+    }
+  }
+}

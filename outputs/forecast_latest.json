@@ -1,0 +1,222 @@
+{
+  "generated_at": "2026-04-08T00:49:51.022710",
+  "last_data_date": "2026-04",
+  "last_wci": 2600.0,
+  "scenario_weights": {
+    "baseline": 0.4,
+    "bull": 0.3,
+    "bear": 0.3
+  },
+  "forecasts": {
+    "1": {
+      "forecast_date": "2026-05",
+      "horizon_months": 1,
+      "scenarios": {
+        "baseline": {
+          "xgb": 3169.0,
+          "sarimax": 1467.0,
+          "ensemble": 2658.0,
+          "ci_lower": 2260.0,
+          "ci_upper": 3057.0
+        },
+        "bull": {
+          "xgb": 3627.0,
+          "sarimax": 1464.0,
+          "ensemble": 2978.0,
+          "ci_lower": 2531.0,
+          "ci_upper": 3425.0
+        },
+        "bear": {
+          "xgb": 2428.0,
+          "sarimax": 1453.0,
+          "ensemble": 2135.0,
+          "ci_lower": 1815.0,
+          "ci_upper": 2455.0
+        }
+      },
+      "weighted_forecast": 2597.0,
+      "weighted_ci_lower": 2208.0,
+      "weighted_ci_upper": 2987.0,
+      "weights": {
+        "baseline": 0.4,
+        "bull": 0.3,
+        "bear": 0.3
+      }
+    },
+    "2": {
+      "forecast_date": "2026-06",
+      "horizon_months": 2,
+      "scenarios": {
+        "baseline": {
+          "xgb": 3169.0,
+          "sarimax": 1467.0,
+          "ensemble": 2658.0,
+          "ci_lower": 2094.0,
+          "ci_upper": 3222.0
+        },
+        "bull": {
+          "xgb": 3627.0,
+          "sarimax": 1464.0,
+          "ensemble": 2978.0,
+          "ci_lower": 2346.0,
+          "ci_upper": 3610.0
+        },
+        "bear": {
+          "xgb": 2428.0,
+          "sarimax": 1453.0,
+          "ensemble": 2135.0,
+          "ci_lower": 1682.0,
+          "ci_upper": 2588.0
+        }
+      },
+      "weighted_forecast": 2597.0,
+      "weighted_ci_lower": 2046.0,
+      "weighted_ci_upper": 3148.0,
+      "weights": {
+        "baseline": 0.4,
+        "bull": 0.3,
+        "bear": 0.3
+      }
+    },
+    "3": {
+      "forecast_date": "2026-07",
+      "horizon_months": 3,
+      "scenarios": {
+        "baseline": {
+          "xgb": 3169.0,
+          "sarimax": 1467.0,
+          "ensemble": 2658.0,
+          "ci_lower": 1968.0,
+          "ci_upper": 3349.0
+        },
+        "bull": {
+          "xgb": 3627.0,
+          "sarimax": 1464.0,
+          "ensemble": 2978.0,
+          "ci_lower": 2204.0,
+          "ci_upper": 3752.0
+        },
+        "bear": {
+          "xgb": 2428.0,
+          "sarimax": 1453.0,
+          "ensemble": 2135.0,
+          "ci_lower": 1580.0,
+          "ci_upper": 2690.0
+        }
+      },
+      "weighted_forecast": 2597.0,
+      "weighted_ci_lower": 1922.0,
+      "weighted_ci_upper": 3272.0,
+      "weights": {
+        "baseline": 0.4,
+        "bull": 0.3,
+        "bear": 0.3
+      }
+    },
+    "4": {
+      "forecast_date": "2026-08",
+      "horizon_months": 4,
+      "scenarios": {
+        "baseline": {
+          "xgb": 3169.0,
+          "sarimax": 1467.0,
+          "ensemble": 2658.0,
+          "ci_lower": 1861.0,
+          "ci_upper": 3456.0
+        },
+        "bull": {
+          "xgb": 3627.0,
+          "sarimax": 1464.0,
+          "ensemble": 2978.0,
+          "ci_lower": 2085.0,
+          "ci_upper": 3871.0
+        },
+        "bear": {
+          "xgb": 2427.0,
+          "sarimax": 1453.0,
+          "ensemble": 2135.0,
+          "ci_lower": 1495.0,
+          "ci_upper": 2776.0
+        }
+      },
+      "weighted_forecast": 2597.0,
+      "weighted_ci_lower": 1818.0,
+      "weighted_ci_upper": 3376.0,
+      "weights": {
+        "baseline": 0.4,
+        "bull": 0.3,
+        "bear": 0.3
+      }
+    },
+    "5": {
+      "forecast_date": "2026-09",
+      "horizon_months": 5,
+      "scenarios": {
+        "baseline": {
+          "xgb": 3169.0,
+          "sarimax": 1467.0,
+          "ensemble": 2658.0,
+          "ci_lower": 1767.0,
+          "ci_upper": 3550.0
+        },
+        "bull": {
+          "xgb": 3627.0,
+          "sarimax": 1464.0,
+          "ensemble": 2978.0,
+          "ci_lower": 1979.0,
+          "ci_upper": 3977.0
+        },
+        "bear": {
+          "xgb": 2427.0,
+          "sarimax": 1453.0,
+          "ensemble": 2135.0,
+          "ci_lower": 1419.0,
+          "ci_upper": 2851.0
+        }
+      },
+      "weighted_forecast": 2597.0,
+      "weighted_ci_lower": 1726.0,
+      "weighted_ci_upper": 3468.0,
+      "weights": {
+        "baseline": 0.4,
+        "bull": 0.3,
+        "bear": 0.3
+      }
+    },
+    "6": {
+      "forecast_date": "2026-10",
+      "horizon_months": 6,
+      "scenarios": {
+        "baseline": {
+          "xgb": 3169.0,
+          "sarimax": 1467.0,
+          "ensemble": 2658.0,
+          "ci_lower": 1681.0,
+          "ci_upper": 3635.0
+        },
+        "bull": {
+          "xgb": 3626.0,
+          "sarimax": 1464.0,
+          "ensemble": 2978.0,
+          "ci_lower": 1884.0,
+          "ci_upper": 4072.0
+        },
+        "bear": {
+          "xgb": 2427.0,
+          "sarimax": 1453.0,
+          "ensemble": 2135.0,
+          "ci_lower": 1350.0,
+          "ci_upper": 2919.0
+        }
+      },
+      "weighted_forecast": 2597.0,
+      "weighted_ci_lower": 1643.0,
+      "weighted_ci_upper": 3551.0,
+      "weights": {
+        "baseline": 0.4,
+        "bull": 0.3,
+        "bear": 0.3
+      }
+    }
+  }
+}

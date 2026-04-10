@@ -1,0 +1,16 @@
+{
+  "brent_crude": 74.0,
+  "usdcny": 7.28,
+  "bdry_etf": 10.4,
+  "dummy_ukraine": 1,
+  "dummy_red_sea": 1,
+  "dummy_hormuz": 0,
+  "dummy_panama": 0,
+  "dummy_covid": 0,
+  "dummy_supply_crunch": 0,
+  "coef_brent": 1.0,
+  "coef_usdcny": 1.0,
+  "coef_bdry": 1.0,
+  "coef_ukraine": 1.0,
+  "coef_red_sea": 1.0
+}

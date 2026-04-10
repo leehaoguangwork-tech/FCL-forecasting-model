@@ -1,0 +1,25 @@
+{
+  "generated_at": "2026-04-07T23:59:40.265853",
+  "backtest_window": "2022-01 to 2024-12",
+  "n_months": 36,
+  "metrics": {
+    "sarimax_1step": {
+      "mae": 379.42,
+      "rmse": 655.96,
+      "mape": 9.29,
+      "dir_acc": 77.14
+    },
+    "stacked_baseline": {
+      "mae": 392.02,
+      "rmse": 671.95,
+      "mape": 9.79,
+      "dir_acc": 77.14
+    },
+    "stacked_weighted": {
+      "mae": 399.95,
+      "rmse": 682.69,
+      "mape": 9.92,
+      "dir_acc": 77.14
+    }
+  }
+}
