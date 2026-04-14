@@ -1,0 +1,272 @@
+{
+  "path1_CNSHA": {
+    "path": "path1",
+    "lane": "CNSHA",
+    "alpha_constrained": 1.0,
+    "beta_constrained": 0.0,
+    "alpha_unconstrained": 1.1583,
+    "beta_unconstrained": -0.2201,
+    "optimal_cap": "10%"
+  },
+  "path1_JPTYO": {
+    "path": "path1",
+    "lane": "JPTYO",
+    "alpha_constrained": 1.0,
+    "beta_constrained": 0.0,
+    "alpha_unconstrained": 1.122,
+    "beta_unconstrained": -0.15,
+    "optimal_cap": "15%"
+  },
+  "path1_KRPUS": {
+    "path": "path1",
+    "lane": "KRPUS",
+    "alpha_constrained": 1.0,
+    "beta_constrained": 0.0,
+    "alpha_unconstrained": 1.878,
+    "beta_unconstrained": -0.9319,
+    "optimal_cap": "5%"
+  },
+  "path1_INNSA": {
+    "path": "path1",
+    "lane": "INNSA",
+    "alpha_constrained": 0.0,
+    "beta_constrained": 1.0,
+    "alpha_unconstrained": 0.3886,
+    "beta_unconstrained": 0.1047,
+    "optimal_cap": "5%"
+  },
+  "path1_THBKK": {
+    "path": "path1",
+    "lane": "THBKK",
+    "alpha_constrained": 0.9689,
+    "beta_constrained": 0.0311,
+    "alpha_unconstrained": 0.2607,
+    "beta_unconstrained": 0.5923,
+    "optimal_cap": "10%"
+  },
+  "path1_DEHAM": {
+    "path": "path1",
+    "lane": "DEHAM",
+    "alpha_constrained": 0.0,
+    "beta_constrained": 1.0,
+    "alpha_unconstrained": -0.2819,
+    "beta_unconstrained": 1.0296,
+    "optimal_cap": "20%"
+  },
+  "path1_NLRTM": {
+    "path": "path1",
+    "lane": "NLRTM",
+    "alpha_constrained": 0.0,
+    "beta_constrained": 1.0,
+    "alpha_unconstrained": -0.2657,
+    "beta_unconstrained": 0.9783,
+    "optimal_cap": "30%"
+  },
+  "path1_GBFXT": {
+    "path": "path1",
+    "lane": "GBFXT",
+    "alpha_constrained": 0.4427,
+    "beta_constrained": 0.5573,
+    "alpha_unconstrained": 0.5743,
+    "beta_unconstrained": 0.0886,
+    "optimal_cap": "10%"
+  },
+  "path1_USNYC": {
+    "path": "path1",
+    "lane": "USNYC",
+    "alpha_constrained": 0.2077,
+    "beta_constrained": 0.7923,
+    "alpha_unconstrained": 0.8493,
+    "beta_unconstrained": -0.2516,
+    "optimal_cap": "30%"
+  },
+  "path1_USLAX": {
+    "path": "path1",
+    "lane": "USLAX",
+    "alpha_constrained": 0.0,
+    "beta_constrained": 1.0,
+    "alpha_unconstrained": 0.4121,
+    "beta_unconstrained": 0.0472,
+    "optimal_cap": "20%"
+  },
+  "path1_ARBUE": {
+    "path": "path1",
+    "lane": "ARBUE",
+    "alpha_constrained": 0.0,
+    "beta_constrained": 1.0,
+    "alpha_unconstrained": 0.2412,
+    "beta_unconstrained": 0.631,
+    "optimal_cap": "25%"
+  },
+  "path1_AEJEA": {
+    "path": "path1",
+    "lane": "AEJEA",
+    "alpha_constrained": 0.0,
+    "beta_constrained": 1.0,
+    "alpha_unconstrained": -0.4022,
+    "beta_unconstrained": 1.3414,
+    "optimal_cap": "20%"
+  },
+  "path1_NGLOS": {
+    "path": "path1",
+    "lane": "NGLOS",
+    "alpha_constrained": 0.9901,
+    "beta_constrained": 0.0099,
+    "alpha_unconstrained": 1.0739,
+    "beta_unconstrained": -0.1098,
+    "optimal_cap": "5%"
+  },
+  "path1_AUSYD": {
+    "path": "path1",
+    "lane": "AUSYD",
+    "alpha_constrained": 0.5409,
+    "beta_constrained": 0.4591,
+    "alpha_unconstrained": 0.5092,
+    "beta_unconstrained": 0.4355,
+    "optimal_cap": "5%"
+  },
+  "path1_QAHMD": {
+    "path": "path1",
+    "lane": "QAHMD",
+    "alpha_constrained": 0.0,
+    "beta_constrained": 1.0,
+    "alpha_unconstrained": 0.8437,
+    "beta_unconstrained": -0.524,
+    "optimal_cap": "30%"
+  },
+  "path2_CNSHA": {
+    "path": "path2",
+    "lane": "CNSHA",
+    "alpha_constrained": 0.7965,
+    "beta_constrained": 0.2035,
+    "alpha_unconstrained": 0.503,
+    "beta_unconstrained": 0.4408,
+    "optimal_cap": "5%"
+  },
+  "path2_JPTYO": {
+    "path": "path2",
+    "lane": "JPTYO",
+    "alpha_constrained": 0.6719,
+    "beta_constrained": 0.3281,
+    "alpha_unconstrained": 0.6062,
+    "beta_unconstrained": 0.442,
+    "optimal_cap": "5%"
+  },
+  "path2_KRPUS": {
+    "path": "path2",
+    "lane": "KRPUS",
+    "alpha_constrained": 0.6219,
+    "beta_constrained": 0.3781,
+    "alpha_unconstrained": 0.6376,
+    "beta_unconstrained": 0.366,
+    "optimal_cap": "5%"
+  },
+  "path2_INNSA": {
+    "path": "path2",
+    "lane": "INNSA",
+    "alpha_constrained": 0.5,
+    "beta_constrained": 0.5,
+    "alpha_unconstrained": 0.7077,
+    "beta_unconstrained": -0.7077,
+    "optimal_cap": "5%"
+  },
+  "path2_THBKK": {
+    "path": "path2",
+    "lane": "THBKK",
+    "alpha_constrained": 1.0,
+    "beta_constrained": 0.0,
+    "alpha_unconstrained": 1.1662,
+    "beta_unconstrained": -0.1623,
+    "optimal_cap": "5%"
+  },
+  "path2_DEHAM": {
+    "path": "path2",
+    "lane": "DEHAM",
+    "alpha_constrained": 0.961,
+    "beta_constrained": 0.039,
+    "alpha_unconstrained": 0.4657,
+    "beta_unconstrained": 0.7466,
+    "optimal_cap": "25%"
+  },
+  "path2_NLRTM": {
+    "path": "path2",
+    "lane": "NLRTM",
+    "alpha_constrained": 0.0,
+    "beta_constrained": 1.0,
+    "alpha_unconstrained": -0.1207,
+    "beta_unconstrained": 0.2368,
+    "optimal_cap": "30%"
+  },
+  "path2_GBFXT": {
+    "path": "path2",
+    "lane": "GBFXT",
+    "alpha_constrained": 0.0,
+    "beta_constrained": 1.0,
+    "alpha_unconstrained": 1.1605,
+    "beta_unconstrained": -0.9525,
+    "optimal_cap": "5%"
+  },
+  "path2_USNYC": {
+    "path": "path2",
+    "lane": "USNYC",
+    "alpha_constrained": 0.368,
+    "beta_constrained": 0.632,
+    "alpha_unconstrained": 0.4498,
+    "beta_unconstrained": 0.5152,
+    "optimal_cap": "10%"
+  },
+  "path2_USLAX": {
+    "path": "path2",
+    "lane": "USLAX",
+    "alpha_constrained": 0.0,
+    "beta_constrained": 1.0,
+    "alpha_unconstrained": 0.2142,
+    "beta_unconstrained": 0.5131,
+    "optimal_cap": "20%"
+  },
+  "path2_ARBUE": {
+    "path": "path2",
+    "lane": "ARBUE",
+    "alpha_constrained": 0.0,
+    "beta_constrained": 1.0,
+    "alpha_unconstrained": -1.102,
+    "beta_unconstrained": 1.8472,
+    "optimal_cap": "20%"
+  },
+  "path2_AEJEA": {
+    "path": "path2",
+    "lane": "AEJEA",
+    "alpha_constrained": 1.0,
+    "beta_constrained": 0.0,
+    "alpha_unconstrained": 0.8665,
+    "beta_unconstrained": 0.2093,
+    "optimal_cap": "10%"
+  },
+  "path2_NGLOS": {
+    "path": "path2",
+    "lane": "NGLOS",
+    "alpha_constrained": 0.5,
+    "beta_constrained": 0.5,
+    "alpha_unconstrained": 0.7164,
+    "beta_unconstrained": -0.7164,
+    "optimal_cap": "10%"
+  },
+  "path2_AUSYD": {
+    "path": "path2",
+    "lane": "AUSYD",
+    "alpha_constrained": 0.5,
+    "beta_constrained": 0.5,
+    "alpha_unconstrained": 0.0,
+    "beta_unconstrained": -0.0,
+    "optimal_cap": "10%"
+  },
+  "path2_QAHMD": {
+    "path": "path2",
+    "lane": "QAHMD",
+    "alpha_constrained": 0.0,
+    "beta_constrained": 1.0,
+    "alpha_unconstrained": 0.2253,
+    "beta_unconstrained": 0.2377,
+    "optimal_cap": "30%"
+  }
+}
