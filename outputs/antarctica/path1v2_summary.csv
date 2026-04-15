@@ -1,0 +1,16 @@
+lane,reliability,cv,bt_sar_mape,bt_stk_mape,val_sar_mape,val_stk_mape,fx_used
+CNSHA,High,0.316,11.99,17.2,2.34,1.7,usd_cny
+JPTYO,Medium,0.274,25.58,36.98,6.24,3.81,usd_cny
+KRPUS,High,0.35,15.31,19.86,5.88,2.29,usd_cny
+INNSA,Low,0.668,78.7,75.92,13.57,8.12,usd_inr
+THBKK,High,0.382,23.31,26.17,4.71,3.28,usd_cny
+DEHAM,Low,0.737,60.68,57.55,15.75,12.19,usd_eur
+NLRTM,Low,0.748,60.48,62.23,21.73,19.35,usd_eur
+GBFXT,Low,0.714,65.0,62.62,23.66,27.87,usd_eur
+USNYC,Medium,0.545,37.62,30.8,18.49,8.45,
+USLAX,Low,0.668,45.53,43.05,25.45,16.86,
+ARBUE,Low,0.588,98.28,75.01,31.83,22.39,usd_ars
+AEJEA,Low,0.707,47.79,47.14,14.33,7.09,
+NGLOS,High,0.374,22.95,26.64,8.91,5.32,usd_ngn
+AUSYD,Low,0.719,61.97,62.93,10.97,8.17,usd_aud
+QAHMD,Medium,0.519,45.49,40.67,9.64,8.0,
