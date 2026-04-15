@@ -1,0 +1,31 @@
+path,path_label,lane,n_val,mape_baseline,mape_cap30,mape_cap10,delta_pp,winner
+path1,Model with COVID,AEJEA,15,14.85,12.96,13.83,-0.88,30% Cap
+path1,Model with COVID,ARBUE,15,35.49,28.19,29.97,-1.77,30% Cap
+path1,Model with COVID,AUSYD,15,20.96,20.49,20.47,0.02,10% Cap
+path1,Model with COVID,CNSHA,15,16.69,15.53,15.53,0.0,Tie
+path1,Model with COVID,DEHAM,15,27.56,19.92,21.04,-1.12,30% Cap
+path1,Model with COVID,GBFXT,15,26.49,26.22,26.22,0.0,Tie
+path1,Model with COVID,INNSA,15,11.34,11.3,10.86,0.44,10% Cap
+path1,Model with COVID,JPTYO,15,6.38,3.78,3.85,-0.07,30% Cap
+path1,Model with COVID,KRPUS,15,6.28,5.06,5.06,0.0,Tie
+path1,Model with COVID,NGLOS,15,11.51,11.22,10.98,0.24,10% Cap
+path1,Model with COVID,NLRTM,15,35.26,34.69,35.55,-0.86,30% Cap
+path1,Model with COVID,QAHMD,15,29.39,24.48,27.75,-3.27,30% Cap
+path1,Model with COVID,THBKK,15,6.24,4.6,4.6,0.0,Tie
+path1,Model with COVID,USLAX,15,37.72,31.01,33.21,-2.2,30% Cap
+path1,Model with COVID,USNYC,15,28.8,22.78,23.89,-1.11,30% Cap
+path2,Stable Model,AEJEA,15,47.62,51.41,46.41,5.0,10% Cap
+path2,Stable Model,ARBUE,15,28.88,27.57,27.93,-0.36,30% Cap
+path2,Stable Model,AUSYD,15,12.77,30.17,12.01,18.17,10% Cap
+path2,Stable Model,CNSHA,15,14.21,13.82,13.82,0.0,Tie
+path2,Stable Model,DEHAM,15,21.98,19.93,21.43,-1.5,30% Cap
+path2,Stable Model,GBFXT,15,51.65,71.49,57.43,14.06,10% Cap
+path2,Stable Model,INNSA,15,33.61,51.33,36.06,15.27,10% Cap
+path2,Stable Model,JPTYO,15,6.71,7.75,7.75,0.0,Tie
+path2,Stable Model,KRPUS,15,9.66,7.96,7.96,0.0,Tie
+path2,Stable Model,NGLOS,15,11.44,9.21,9.15,0.06,10% Cap
+path2,Stable Model,NLRTM,15,50.14,48.07,49.45,-1.38,30% Cap
+path2,Stable Model,QAHMD,15,50.15,30.12,41.28,-11.16,30% Cap
+path2,Stable Model,THBKK,15,10.69,9.45,9.45,0.0,Tie
+path2,Stable Model,USLAX,15,41.75,39.37,38.58,0.78,10% Cap
+path2,Stable Model,USNYC,15,42.36,44.16,40.62,3.53,10% Cap
