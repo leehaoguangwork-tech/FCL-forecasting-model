@@ -1,0 +1,137 @@
+{
+  "CNSHA": {
+    "reliability": "High",
+    "cv": 0.293,
+    "bt_sar_mape": NaN,
+    "bt_stk_mape": NaN,
+    "val_sar_mape": 14.21,
+    "val_stk_mape": 13.82,
+    "cap": 10
+  },
+  "JPTYO": {
+    "reliability": "High",
+    "cv": 0.296,
+    "bt_sar_mape": NaN,
+    "bt_stk_mape": NaN,
+    "val_sar_mape": 6.71,
+    "val_stk_mape": 7.75,
+    "cap": 10
+  },
+  "KRPUS": {
+    "reliability": "High",
+    "cv": 0.332,
+    "bt_sar_mape": NaN,
+    "bt_stk_mape": NaN,
+    "val_sar_mape": 9.66,
+    "val_stk_mape": 7.96,
+    "cap": 10
+  },
+  "INNSA": {
+    "reliability": "Low",
+    "cv": 0.376,
+    "bt_sar_mape": NaN,
+    "bt_stk_mape": NaN,
+    "val_sar_mape": 33.61,
+    "val_stk_mape": 36.06,
+    "cap": 10
+  },
+  "THBKK": {
+    "reliability": "Medium",
+    "cv": 0.217,
+    "bt_sar_mape": NaN,
+    "bt_stk_mape": NaN,
+    "val_sar_mape": 10.69,
+    "val_stk_mape": 9.45,
+    "cap": 10
+  },
+  "DEHAM": {
+    "reliability": "Low",
+    "cv": 0.621,
+    "bt_sar_mape": NaN,
+    "bt_stk_mape": NaN,
+    "val_sar_mape": 21.98,
+    "val_stk_mape": 21.43,
+    "cap": 10
+  },
+  "NLRTM": {
+    "reliability": "Low",
+    "cv": 0.573,
+    "bt_sar_mape": NaN,
+    "bt_stk_mape": NaN,
+    "val_sar_mape": 50.14,
+    "val_stk_mape": 49.45,
+    "cap": 10
+  },
+  "GBFXT": {
+    "reliability": "Low",
+    "cv": 0.61,
+    "bt_sar_mape": NaN,
+    "bt_stk_mape": NaN,
+    "val_sar_mape": 51.65,
+    "val_stk_mape": 57.43,
+    "cap": 10
+  },
+  "USNYC": {
+    "reliability": "Medium",
+    "cv": 0.365,
+    "bt_sar_mape": NaN,
+    "bt_stk_mape": NaN,
+    "val_sar_mape": 42.36,
+    "val_stk_mape": 40.62,
+    "cap": 10
+  },
+  "USLAX": {
+    "reliability": "Low",
+    "cv": 0.432,
+    "bt_sar_mape": NaN,
+    "bt_stk_mape": NaN,
+    "val_sar_mape": 41.75,
+    "val_stk_mape": 38.58,
+    "cap": 10
+  },
+  "ARBUE": {
+    "reliability": "Low",
+    "cv": 0.534,
+    "bt_sar_mape": NaN,
+    "bt_stk_mape": NaN,
+    "val_sar_mape": 28.88,
+    "val_stk_mape": 27.93,
+    "cap": 10
+  },
+  "AEJEA": {
+    "reliability": "Medium",
+    "cv": 0.397,
+    "bt_sar_mape": NaN,
+    "bt_stk_mape": NaN,
+    "val_sar_mape": 47.62,
+    "val_stk_mape": 46.41,
+    "cap": 10
+  },
+  "NGLOS": {
+    "reliability": "Low",
+    "cv": 0.305,
+    "bt_sar_mape": NaN,
+    "bt_stk_mape": NaN,
+    "val_sar_mape": 11.44,
+    "val_stk_mape": 9.15,
+    "cap": 10
+  },
+  "AUSYD": {
+    "reliability": "Low",
+    "cv": 0.648,
+    "bt_sar_mape": NaN,
+    "bt_stk_mape": NaN,
+    "val_sar_mape": 12.77,
+    "val_stk_mape": 12.01,
+    "cap": 10
+  },
+  "QAHMD": {
+    "reliability": "Low",
+    "cv": 0.455,
+    "bt_sar_mape": NaN,
+    "bt_stk_mape": NaN,
+    "val_sar_mape": 50.15,
+    "val_stk_mape": 41.28,
+    "cap": 10
+  }
+}

@@ -230,14 +230,26 @@ def load_validation(path_tag):
 
 @st.cache_data(ttl=3600)
 def load_backtest(path_tag, lane):
-    fp = os.path.join(OUT, f'{path_tag}_backtest_{lane}.csv')
+    # Use v2.0 backtest for path1, cap10 normalised validation for path2
+    if path_tag == 'path1':
+        fp = os.path.join(OUT, f'path1v2_backtest_{lane}.csv')
+    elif path_tag == 'path2':
+        fp = os.path.join(OUT, f'path2_cap10_validation_{lane}.csv')
+    else:
+        fp = os.path.join(OUT, f'{path_tag}_backtest_{lane}.csv')
     if os.path.exists(fp):
         return pd.read_csv(fp, index_col=0, parse_dates=True)
     return pd.DataFrame()
 
 @st.cache_data(ttl=3600)
 def load_val_csv(path_tag, lane):
-    fp = os.path.join(OUT, f'{path_tag}_validation_{lane}.csv')
+    # Use v2.0 validation for path1, cap10 normalised for path2
+    if path_tag == 'path1':
+        fp = os.path.join(OUT, f'path1v2_validation_{lane}.csv')
+    elif path_tag == 'path2':
+        fp = os.path.join(OUT, f'path2_cap10_validation_{lane}.csv')
+    else:
+        fp = os.path.join(OUT, f'{path_tag}_validation_{lane}.csv')
     if os.path.exists(fp):
         return pd.read_csv(fp, index_col=0, parse_dates=True)
     return pd.DataFrame()
@@ -270,7 +282,9 @@ def compute_live_forecast(path_tag, lane, ov, horizon=6):
     """
     import traceback
     model_dir  = os.path.join(BASE, 'models', 'antarctica')
-    bundle_file = os.path.join(model_dir, f'{path_tag}_final_models.pkl')
+    # Use v2.0 bundle for path1 (lane-specific FX + Maersk proxy)
+    bundle_name = 'path1v2_final_models.pkl' if path_tag == 'path1' else f'{path_tag}_final_models.pkl'
+    bundle_file = os.path.join(model_dir, bundle_name)
     exog_file  = os.path.join(DATA, 'exog_features_antarctica.parquet')
     panel_file = os.path.join(DATA, 'antarctica_monthly_panel.parquet')
 
@@ -336,9 +350,30 @@ def compute_live_forecast(path_tag, lane, ov, horizon=6):
 
         # ── Build SARIMAX exog matrix ─────────────────────────────────────────
         # Map from column name to override value
+        # Lane-specific FX: use the correct currency pair for this lane
+        lane_fx_col = {
+            'CNSHA': 'usd_cny', 'JPTYO': 'usd_cny', 'KRPUS': 'usd_cny',
+            'THBKK': 'usd_cny',
+            'DEHAM': 'usd_eur', 'NLRTM': 'usd_eur', 'GBFXT': 'usd_eur',
+            'INNSA': 'usd_inr',
+            'AUSYD': 'usd_aud',
+            'ARBUE': 'usd_ars',
+            'NGLOS': 'usd_ngn',
+            'AEJEA': None, 'QAHMD': None,  # AED/QAR pegged to USD
+            'USNYC': None, 'USLAX': None,  # USD domestic
+        }.get(lane, 'usd_cny')
+        lane_fx_val = float(exog_df[lane_fx_col].iloc[-1]) if lane_fx_col and lane_fx_col in exog_df.columns else usdcny_eff
+        last_maersk = float(exog_df['maersk_proxy'].iloc[-1]) if 'maersk_proxy' in exog_df.columns else 15000.0
         exog_value_map = {
             'brent_crude':         brent_eff,
             'usdcny':              usdcny_eff,
+            'usd_cny':             usdcny_eff,
+            'usd_eur':             lane_fx_val if lane_fx_col == 'usd_eur' else float(exog_df['usd_eur'].iloc[-1]) if 'usd_eur' in exog_df.columns else 1.08,
+            'usd_inr':             lane_fx_val if lane_fx_col == 'usd_inr' else float(exog_df['usd_inr'].iloc[-1]) if 'usd_inr' in exog_df.columns else 83.0,
+            'usd_aud':             lane_fx_val if lane_fx_col == 'usd_aud' else float(exog_df['usd_aud'].iloc[-1]) if 'usd_aud' in exog_df.columns else 1.52,
+            'usd_ars':             lane_fx_val if lane_fx_col == 'usd_ars' else float(exog_df['usd_ars'].iloc[-1]) if 'usd_ars' in exog_df.columns else 900.0,
+            'usd_ngn':             lane_fx_val if lane_fx_col == 'usd_ngn' else float(exog_df['usd_ngn'].iloc[-1]) if 'usd_ngn' in exog_df.columns else 1500.0,
+            'maersk_proxy':        last_maersk,
             'us_indpro':           last_indpro,
             'us_cfnai':            last_cfnai,
             'bdry_etf':            bdry_eff,
@@ -412,7 +447,21 @@ def compute_live_forecast(path_tag, lane, ov, horizon=6):
                         elif col == 'brent_crude':         row[col] = brent_eff
                         elif col == 'brent_crude_l1':      row[col] = last_exog_vals.get('brent_crude', brent_eff)
                         elif col == 'usdcny':              row[col] = usdcny_eff
+                        elif col == 'usd_cny':             row[col] = usdcny_eff
                         elif col == 'usdcny_l1':           row[col] = last_exog_vals.get('usdcny', usdcny_eff)
+                        elif col == 'usd_cny_l1':          row[col] = last_exog_vals.get('usd_cny', usdcny_eff)
+                        elif col == 'usd_eur':             row[col] = exog_value_map.get('usd_eur', 1.08)
+                        elif col == 'usd_eur_l1':          row[col] = last_exog_vals.get('usd_eur', exog_value_map.get('usd_eur', 1.08))
+                        elif col == 'usd_inr':             row[col] = exog_value_map.get('usd_inr', 83.0)
+                        elif col == 'usd_inr_l1':          row[col] = last_exog_vals.get('usd_inr', exog_value_map.get('usd_inr', 83.0))
+                        elif col == 'usd_aud':             row[col] = exog_value_map.get('usd_aud', 1.52)
+                        elif col == 'usd_aud_l1':          row[col] = last_exog_vals.get('usd_aud', exog_value_map.get('usd_aud', 1.52))
+                        elif col == 'usd_ars':             row[col] = exog_value_map.get('usd_ars', 900.0)
+                        elif col == 'usd_ars_l1':          row[col] = last_exog_vals.get('usd_ars', exog_value_map.get('usd_ars', 900.0))
+                        elif col == 'usd_ngn':             row[col] = exog_value_map.get('usd_ngn', 1500.0)
+                        elif col == 'usd_ngn_l1':          row[col] = last_exog_vals.get('usd_ngn', exog_value_map.get('usd_ngn', 1500.0))
+                        elif col == 'maersk_proxy':        row[col] = last_maersk
+                        elif col == 'maersk_proxy_l1':     row[col] = last_exog_vals.get('maersk_proxy', last_maersk)
                         elif col == 'us_indpro':           row[col] = last_indpro
                         elif col == 'us_indpro_l1':        row[col] = last_exog_vals.get('us_indpro', last_indpro)
                         elif col == 'us_cfnai':            row[col] = last_cfnai
