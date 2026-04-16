@@ -238,9 +238,11 @@ def load_backtest(path_tag, lane):
     else:
         fp = os.path.join(OUT, f'{path_tag}_backtest_{lane}.csv')
     if os.path.exists(fp):
-        return pd.read_csv(fp, index_col=0, parse_dates=True)
+        df = pd.read_csv(fp, index_col=0, parse_dates=True)
+        # Normalise column names: stk_pred -> stacked_pred, sar_pred -> sarimax_pred
+        df = df.rename(columns={'stk_pred': 'stacked_pred', 'sar_pred': 'sarimax_pred'})
+        return df
     return pd.DataFrame()
-
 @st.cache_data(ttl=3600)
 def load_val_csv(path_tag, lane):
     # Use v2.0 validation for path1, cap10 normalised for path2
@@ -251,9 +253,11 @@ def load_val_csv(path_tag, lane):
     else:
         fp = os.path.join(OUT, f'{path_tag}_validation_{lane}.csv')
     if os.path.exists(fp):
-        return pd.read_csv(fp, index_col=0, parse_dates=True)
+        df = pd.read_csv(fp, index_col=0, parse_dates=True)
+        # Normalise column names: stk_pred -> stacked_pred, sar_pred -> sarimax_pred
+        df = df.rename(columns={'stk_pred': 'stacked_pred', 'sar_pred': 'sarimax_pred'})
+        return df
     return pd.DataFrame()
-
 @st.cache_data(ttl=3600)
 def load_comparison():
     fp = os.path.join(OUT, 'path_comparison.csv')
